@@ -20,6 +20,8 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/pkg/errors"
+
 	"golang.org/x/sync/errgroup"
 
 	"github.com/west2-online/fzuhelper-server/kitex_gen/launch_screen"
@@ -32,7 +34,7 @@ func (s *LaunchScreenService) CreateImage(req *launch_screen.CreateImageRequest)
 	Loc := utils.LoadCNLocation()
 	id, err := s.sf.NextVal()
 	if err != nil {
-		return nil, fmt.Errorf("LaunchScreen.CreateImage SFCreateIDError:%w", err)
+		return nil, errors.Errorf("LaunchScreen.CreateImage SFCreateIDError: %v", err)
 	}
 	imgUrl := upyun.GenerateImgName(id)
 

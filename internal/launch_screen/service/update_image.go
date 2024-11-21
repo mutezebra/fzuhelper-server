@@ -19,6 +19,8 @@ package service
 import (
 	"fmt"
 
+	"github.com/pkg/errors"
+
 	"golang.org/x/sync/errgroup"
 
 	"github.com/west2-online/fzuhelper-server/kitex_gen/launch_screen"
@@ -29,7 +31,7 @@ import (
 func (s *LaunchScreenService) UpdateImagePath(req *launch_screen.ChangeImageRequest) (pic *model.Picture, err error) {
 	origin, err := s.db.LaunchScreen.GetImageById(s.ctx, req.PictureId)
 	if err != nil {
-		return nil, fmt.Errorf("LaunchScreenService.UpdateImagePath db.GetImageById error: %w", err)
+		return nil, errors.Errorf("LaunchScreenService.UpdateImagePath db.GetImageById error: %v", err)
 	}
 
 	delUrl := origin.Url

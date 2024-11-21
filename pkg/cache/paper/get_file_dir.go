@@ -18,7 +18,8 @@ package paper
 
 import (
 	"context"
-	"fmt"
+
+	"github.com/pkg/errors"
 
 	"github.com/bytedance/sonic"
 
@@ -30,11 +31,11 @@ func (c *CachePaper) GetFileDirCache(ctx context.Context, key string) (bool, *mo
 
 	data, err := c.client.Get(ctx, key).Bytes()
 	if err != nil {
-		return false, ret, fmt.Errorf("dal.GetFileDirCache: get dir info failed: %w", err)
+		return false, ret, errors.Errorf("dal.GetFileDirCache: get dir info failed, err: %v", err)
 	}
 	err = sonic.Unmarshal(data, &ret)
 	if err != nil {
-		return false, ret, fmt.Errorf("dal.GetFileDirCache: Unmarshal dir info failed: %w", err)
+		return false, ret, errors.Errorf("dal.GetFileDirCache: Unmarshal dir info failed, err: %v", err)
 	}
 	return true, ret, nil
 }

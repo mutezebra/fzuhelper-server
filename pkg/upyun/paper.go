@@ -22,11 +22,12 @@ import (
 	"strings"
 	"time"
 
+	"github.com/pkg/errors"
+
 	"github.com/upyun/go-sdk/v3/upyun"
 
 	"github.com/west2-online/fzuhelper-server/config"
 	"github.com/west2-online/fzuhelper-server/kitex_gen/model"
-	"github.com/west2-online/fzuhelper-server/pkg/logger"
 	"github.com/west2-online/fzuhelper-server/pkg/utils"
 )
 
@@ -58,7 +59,9 @@ func GetDir(path string) (*model.UpYunFileDir, error) {
 			Path:        path,
 			ObjectsChan: objsChan,
 		})
-		logger.Error(err)
+		if err != nil {
+			err = errors.Errorf("faield when UpYun.List,err: %v", err)
+		}
 	}()
 	for obj := range objsChan {
 		if obj.IsDir {

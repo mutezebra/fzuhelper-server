@@ -19,6 +19,8 @@ package user
 import (
 	"context"
 
+	"github.com/west2-online/fzuhelper-server/pkg/logger"
+
 	"github.com/west2-online/fzuhelper-server/internal/user/service"
 	"github.com/west2-online/fzuhelper-server/kitex_gen/user"
 	"github.com/west2-online/fzuhelper-server/pkg/base"
@@ -33,9 +35,11 @@ func (s *UserServiceImpl) GetLoginData(ctx context.Context, req *user.GetLoginDa
 	l := service.NewUserService(ctx, "", nil)
 	id, cookies, err := l.GetLoginData(req)
 	if err != nil {
+		logger.Errorf("%+v", err)
 		resp.Base = base.BuildBaseResp(err)
 		return resp, nil
 	}
+
 	resp.Base = base.BuildSuccessResp()
 	resp.Id = id
 	resp.Cookies = cookies
